@@ -69,9 +69,9 @@ describe('graphql(mutation) lifecycle', () => {
     }
   });
 
-  itAsync('rebuilds the mutation on prop change when using `options`', (resolve, reject) => {
+  itAsync.only('rebuilds the mutation on prop change when using `options`', (resolve, reject) => {
     const client = createMockClient(expectedData, query, {
-      id: 2
+      id: 2,
     });
 
     interface Props {
@@ -79,6 +79,7 @@ describe('graphql(mutation) lifecycle', () => {
     }
 
     function options(props: Props) {
+      debugger;
       return {
         variables: {
           id: props.listId
@@ -88,7 +89,10 @@ describe('graphql(mutation) lifecycle', () => {
 
     class Container extends React.Component<ChildProps<Props>> {
       render() {
+        console.log("rendering", this.props);
         if (this.props.listId !== 2) return null;
+        console.log("MUTATING!!!!", this.props);
+        debugger;
         this.props.mutate!().then(() => resolve());
         return null;
       }
@@ -100,7 +104,7 @@ describe('graphql(mutation) lifecycle', () => {
       state = { listId: 1 };
 
       componentDidMount() {
-        setTimeout(() => this.setState({ listId: 2 }), 50);
+        setTimeout(() => this.setState({ listId: 2 }), 10);
       }
 
       render() {

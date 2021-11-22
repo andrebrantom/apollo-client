@@ -7,6 +7,7 @@ import { useMutation } from '../hooks';
 export function Mutation<TData = any, TVariables = OperationVariables>(
   props: MutationComponentOptions<TData, TVariables>
 ) {
+  debugger;
   const [runMutation, result] = useMutation(props.mutation, props);
   return props.children ? props.children(runMutation, result) : null;
 }
